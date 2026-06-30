@@ -8,6 +8,15 @@ from datetime import datetime
 
 # Removed global CHAT_HISTORY list in favor of MongoDB persistence
 
+FORMATTING_INSTRUCTION = (
+    "\n\nFORMATTING RULES FOR COMPATIBILITY WITH UI:\n"
+    "- Do NOT use markdown symbols like '**' or '*' for bold/italic text, '#' for headers, or backticks '`' for inline code. The UI does not render markdown. Use clean double quotes (e.g. \"Linear Regression\") or clean UPPERCASE for titles.\n"
+    "- Use simple bullets like '•' or numbering (e.g. '1.', '2.') for list items.\n"
+    "- ALWAYS separate paragraphs with exactly double newlines (\\n\\n) so the UI splits and renders them as separate paragraphs.\n"
+    "- Use custom math widget blocks for mathematical equations or complex symbols like: genui{\"math_block_widget_always_prefetch_v2\": {\"content\": \"<formula>\"}} (e.g., genui{\"math_block_widget_always_prefetch_v2\": {\"content\": \"E = mc^2\"}})\n"
+    "- Use chart widget blocks to represent data visualization or plots like: genui{\"chart_widget\": {\"title\": \"<visualization description>\"}}"
+)
+
 class ChatService:
     """Service to handle chat logic using either OpenAI or Ollama."""
 
@@ -192,6 +201,7 @@ class ChatService:
                             "You are TeacherClone, a helpful teaching assistant. "
                             "Answer questions strictly based on the provided context. "
                             "Do not make up information not present in the context."
+                            + FORMATTING_INSTRUCTION
                         ),
                     },
                     {"role": "user", "content": rag_prompt},
@@ -232,6 +242,7 @@ class ChatService:
                                     "You ONLY answer questions related to education, school, and learning. "
                                     "If a question is off-topic, politely refuse and redirect to studies.\n\n"
                                     f"Student Question: {question}"
+                                    + FORMATTING_INSTRUCTION
                                 )
                             }
                         ]
@@ -331,6 +342,7 @@ class ChatService:
             print(f"RAG Retrieval Error in stream: {e}")
 
         # 3. Build Final Prompt
+        system_prompt += FORMATTING_INSTRUCTION
         # We want the teacher to use the context but stay in character
         user_prompt = question
         if context_text:

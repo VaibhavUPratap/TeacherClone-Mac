@@ -78,6 +78,47 @@ else:
 _executor = ThreadPoolExecutor(max_workers=1 if _device in ("cuda", "mps") else 2)
 
 
+def clean_text_for_speech(text: str) -> str:
+    """
+    Cleans markdown, code blocks, links, bullet points, and formatting characters
+    from the input text so it reads naturally when spoken by a speech synthesizer.
+    """
+    if not text:
+        return ""
+
+    # 1. Remove block code snippets (```...```) completely as they are not speakable
+    text = re.sub(r"```[\s\S]*?```", " [code snippet omitted] ", text)
+
+    # 2. Convert inline links [link text](url) to just the "link text"
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+
+    # 3. Remove inline backticks (e.g. `code`)
+    text = re.sub(r"`([^`\n]+)`", r"\1", text)
+
+    # 4. Remove bold/italics formatting asterisks and underscores (**, *, __, _)
+    text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+    text = re.sub(r"\*([^*]+)\*", r"\1", text)
+    text = re.sub(r"__([^_]+)__", r"\1", text)
+    text = re.sub(r"_([^_]+)_", r"\1", text)
+
+    # 5. Remove headers symbols (e.g. #, ##, etc.) at the start of lines
+    text = re.sub(r"^\s*#+\s+", "", text, flags=re.MULTILINE)
+
+    # 6. Remove list bullets (e.g. - , * , + ) at the start of lines
+    text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.MULTILINE)
+
+    # 7. Convert math/LaTeX markers like $E=mc^2$ or \[ ... \] to plain text or clean them
+    text = re.sub(r"\$\$([\s\S]*?)\$\$", r"\1", text)
+    text = re.sub(r"\$([^$\n]+)\$", r"\1", text)
+    text = re.sub(r"\\\[([\s\S]*?)\\\]", r"\1", text)
+    text = re.sub(r"\\\((.*?)\\\)", r"\1", text)
+
+    # 8. Clean up extra whitespace and newlines
+    text = re.sub(r"\s+", " ", text)
+    
+    return text.strip()
+
+
 # ---------------------------------------------------------------------------
 # macOS Native TTS Voices & Helper Functions
 # ---------------------------------------------------------------------------
@@ -277,9 +318,14 @@ class TTSService:
         voice_id  : Key that maps to data/voices/{voice_id}.wav or macOS system voice.
         language  : BCP-47 code accepted by XTTS-v2 (e.g. 'en', 'hi', 'es').
         """
+        # Clean text for speech synthesis (strip markdown, links, code snippets)
+        cleaned_text = clean_text_for_speech(text)
+        if not cleaned_text.strip():
+            cleaned_text = "No speakable text provided."
+
         # 1. Cache Lookup
         import hashlib
-        cache_key = hashlib.md5(f"{voice_id}_{language}_{text}_{pacing_factor}".encode("utf-8")).hexdigest()
+        cache_key = hashlib.md5(f"{voice_id}_{language}_{cleaned_text}_{pacing_factor}".encode("utf-8")).hexdigest()
         output_path = str(AUDIO_DIR / f"{cache_key}.wav")
         if os.path.exists(output_path):
             logger.info("TTS: Cache hit! Returning pre-generated audio for key %s", cache_key)
@@ -306,7 +352,7 @@ class TTSService:
                 "--file-format=WAVE",
                 "--data-format=LEI16@16000",
                 "-v", macos_voice,
-                text
+                cleaned_text
             ]
             
             try:
@@ -392,7 +438,7 @@ class TTSService:
 
         # Split text into chunks.
         chunk_size = 200 if _device in ("cuda", "mps") else 250
-        chunks = split_text_into_chunks(text, max_chars=chunk_size)
+        chunks = split_text_into_chunks(cleaned_text, max_chars=chunk_size)
         logger.info("TTS: splitting text into %d chunk(s) [device=%s, chunk_size=%d chars]",
                     len(chunks), _device.upper(), chunk_size)
 

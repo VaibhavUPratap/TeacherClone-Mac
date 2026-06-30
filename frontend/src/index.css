@@ -1156,8 +1156,7 @@ a {
 .active-pill {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: calc(50% - 9px);
   width: 2.5px;
   height: 18px;
   background: var(--color-accent);

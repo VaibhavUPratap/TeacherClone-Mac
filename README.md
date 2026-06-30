@@ -25,7 +25,7 @@ This repository is optimized specifically for **macOS and Apple Silicon (M-serie
 - **Vector Database**: [ChromaDB](https://www.trychroma.com/) (Local RAG document retrieval)
 - **Database**: [Supabase (PostgreSQL)](https://supabase.com/) (Historical Data)
 - **AI Models**: 
-  - [Ollama](https://ollama.com/) (llama3 & nomic-embed-text) - Primary local inference
+  - [Ollama](https://ollama.com/) (qwen3:4b & nomic-embed-text) - Primary local inference
   - [Google Gemini](https://ai.google.dev/) (Gemini 2.5 Flash) - Cloud fallback
 - **TTS**: macOS native Speech Synthesis (`say` utility with Siri/system voices) for runtime speech, and Coqui XTTS-v2 for dynamic voice cloning extraction.
 - **Auth**: Supabase Auth (JWT)
@@ -65,7 +65,7 @@ npm install
 ### 3. Ollama Configuration
 Ensure you have the required models pulled:
 ```bash
-ollama pull llama3
+ollama pull qwen3:4b
 ollama pull nomic-embed-text
 ```
 
@@ -79,7 +79,7 @@ GEMINI_API_KEY=your_gemini_key
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3
+OLLAMA_MODEL=qwen3:4b
 ```
 
 Create a `.env` file in the `frontend/` directory:

@@ -21,10 +21,11 @@ TeacherClone is an AI-powered educational tutoring platform. Students select a s
 - **Vector Database**: ChromaDB (local RAG document retrieval)
 - **Database**: Supabase (PostgreSQL) — primary persistent store for all relational data
 - **AI Models**:
-  - Ollama `llama3` — local chat inference (primary)
+  - Ollama `qwen3:4b` — local chat inference (primary)
   - Ollama `nomic-embed-text` — local embeddings for RAG
   - Google Gemini 2.5 Flash — cloud fallback when Ollama is unavailable
 - **Text-to-Speech**: Native macOS speech synthesis (`say` CLI utility with Siri/system voices) for runtime speech; fallback to Coqui XTTS-v2 on non-Mac platforms.
+  - **Text Cleaning**: Cleans markdown formatting, links, LaTeX formula tokens, and block code snippets from the text before sending it to speech synthesis to prevent verbal clutter.
 - **Voice Cloning Pipeline**: FFmpeg + WebRTC VAD (webrtcvad-wheels) + Coqui XTTS-v2 (used strictly for generating voice reference files)
   - Extracts 25s of clean sustained speech from lecture MP4s as speaker references
   - Per-teacher audio tuning: skip_intro_s, loudnorm normalization, VAD aggressiveness
@@ -51,7 +52,7 @@ TeacherClone is an AI-powered educational tutoring platform. Students select a s
   - Framer Motion — animations & transitions
   - Lucide React — icons
   - Recharts — analytics charts
-- **Styling**: Vanilla CSS with glassmorphism/atmospheric design system (CSS custom properties, OKLCH colours)
+- **Styling**: Vanilla CSS with glassmorphism/atmospheric design system (CSS custom properties, OKLCH colours). Optimized with layout height constraints (`min-height: 0` scroll overrides) and spring-animated active tab indicators.
 
 #### Infrastructure
 - **Auth Provider**: Supabase (email/password + Google OAuth)
@@ -555,7 +556,7 @@ All tables have Row Level Security (RLS) enabled.
 | Start backend | `uvicorn main:app --reload` (in `backend/`) |
 | Start frontend | `npm run dev` (in `frontend/`) |
 | Run Ollama | `ollama serve` |
-| Pull Ollama models | `ollama pull llama3 nomic-embed-text` |
+| Pull Ollama models | `ollama pull qwen3:4b nomic-embed-text` |
 | Run DB migrations | Paste SQL files into Supabase SQL Editor chronologically |
 
 ### Voice Cloning Pipeline Commands

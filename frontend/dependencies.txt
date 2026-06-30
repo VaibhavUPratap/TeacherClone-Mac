@@ -1,0 +1,19 @@
+TEACHERCLONE FRONTEND DEPENDENCIES
+
+Runtime:
+- Node.js (Recommended version: v24.15.0 or later)
+- npm (Node Package Manager)
+
+Direct Dependencies:
+- react (^18.3.1)
+- react-dom (^18.3.1)
+
+Development Dependencies:
+- vite (^5.4.10)
+- @vitejs/plugin-react (^4.3.1)
+
+Installation Command:
+npm install
+
+Development Command:
+npm run dev

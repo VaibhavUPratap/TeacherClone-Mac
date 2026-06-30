@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root {
+  /* === Hallmark · Brutal Theme — editorial cluster === */
+  /* paper-band: mid (L≈80%) · display: display-heavy (Archivo Black) · accent-hue: warm red (0°) */
+
+  --color-paper:    oklch(80% 0.01 0);    /* Concrete grey */
+  --color-paper-2:  oklch(85% 0.01 0);    /* Slightly lighter surface */
+  --color-paper-3:  oklch(90% 0.01 0);    /* Input / Hover */
+  --color-ink:      oklch(20% 0.01 0);    /* Heavy ink */
+  --color-muted:    oklch(40% 0.01 0);    /* Muted ink */
+  --color-subtle:   oklch(60% 0.01 0);    /* Placeholder */
+
+  --color-accent:   oklch(60% 0.18 20);   /* Heavy blood red */
+  --color-rule:     var(--color-ink);      /* Borders are ink-weight */
+  --color-focus:    var(--color-accent);
+
+  /* Typography */
+  --font-display: 'Archivo Black', system-ui, sans-serif;
+  --font-body:    'IBM Plex Mono', monospace;
+  
+  /* Spacing - Rigid 4pt */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-xxl: 48px;
+
+  /* Rules */
+  --rule-thick: 3px;
+  --rule-thin: 1px;
+}
+
+/* Base Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { background: var(--color-paper); color: var(--color-ink); }
+body { font-family: var(--font-body); line-height: 1.4; -webkit-font-smoothing: initial; }
+
+/* The Brutal Slab Navigation (N7) */
+.nav-slab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-bottom: var(--rule-thick) solid var(--color-ink);
+  background: var(--color-paper-2);
+}
+
+.slab-mark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.slab-nav ul {
+  display: flex;
+  gap: var(--space-lg);
+  list-style: none;
+  margin-left: auto;
+}
+
+.slab-nav a {
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-ink);
+  font-size: 0.8rem;
+}
+
+.slab-nav a:hover {
+  background: var(--color-accent);
+  color: white;
+  padding: 2px 4px;
+}
+
+/* Layout Components */
+.brutal-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-lg);
+}
+
+.brutal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0; /* Direct contact for brutalism */
+  border: var(--rule-thick) solid var(--color-ink);
+}
+
+.brutal-card {
+  padding: var(--space-lg);
+  border: var(--rule-thin) solid var(--color-ink);
+  background: var(--color-paper);
+}
+
+.brutal-card:hover {
+  background: var(--color-paper-3);
+  transform: translate(-4px, -4px);
+  box-shadow: 8px 8px 0 var(--color-ink);
+}
+
+/* Typography Hierarchy */
+h1, h2, h3 { font-family: var(--font-display); text-transform: uppercase; line-height: 1.0; }
+h1 { font-size: 4rem; margin-bottom: var(--space-lg); }
+h2 { font-size: 2.5rem; margin-bottom: var(--space-md); }
+
+/* Buttons */
+.btn-brutal {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-xl);
+  background: var(--color-accent);
+  color: white;
+  border: var(--rule-thick) solid var(--color-ink);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.btn-brutal:active { transform: translate(2px, 2px); }
+
+/* Footer (Ft5 Statement) */
+.foot-stmt {
+  padding: var(--space-3xl) var(--space-lg) var(--space-xl);
+  border-top: var(--rule-thick) solid var(--color-ink);
+  background: var(--color-paper-2);
+}
+
+.foot-stmt__line {
+  font-family: var(--font-display);
+  font-size: 5vw;
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin-bottom: var(--space-xl);
+}

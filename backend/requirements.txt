@@ -1,0 +1,32 @@
+pandas>=2.0
+fastapi
+uvicorn
+python-dotenv
+openai
+pydantic
+pydantic-settings
+supabase
+python-jose[cryptography]
+passlib[bcrypt]
+pymongo
+httpx
+python-multipart
+chromadb
+pymupdf
+
+# TTS -- Coqui XTTS-v2 (local inference)
+# On macOS, standard torch/torchaudio wheel includes MPS hardware acceleration.
+torch
+torchaudio
+soundfile
+# Pin transformers to 4.49.x — last version with both isin_mps_friendly
+# and is_torch_greater_or_equal that coqui-tts requires
+transformers==4.49.0
+python-pptx>=0.6.21
+
+# Voice extraction & transcription pipeline
+ffmpeg-python          # Pythonic FFmpeg wrapper for audio/video processing
+pydub                  # High-level audio manipulation (merging, slicing, resampling)
+openai-whisper         # Local speech-to-text transcription (Whisper large-v3)
+webrtcvad              # Google WebRTC Voice Activity Detection for clean segment selection
+numpy                  # Required by whisper + audio processing

@@ -1,0 +1,58 @@
+/* Message Renderer & Widgets Styles */
+.rendered-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.markdown-text {
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+.math-widget {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-lg);
+  background-color: var(--color-paper-2);
+  border: var(--rule-thick) solid var(--color-ink);
+  margin: var(--space-md) 0;
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+.math-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.math-icon::before {
+  content: "REF. NO.";
+}
+
+.math-content {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+}
+
+
+.chart-widget, .unknown-widget {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-paper-2) !important;
+  border: 1px solid var(--color-rule) !important;
+  border-radius: 8px;
+  margin: var(--space-xs) 0;
+}

@@ -185,10 +185,12 @@ class ChatService:
                 for i, chunk in enumerate(context_chunks)
             )
             rag_prompt = (
-                "Answer the question using ONLY the context provided below. "
-                "If the context does not contain enough information, say so honestly.\n\n"
-                f"Context:\n{context_text}\n\n"
-                f"Question:\n{question}"
+                "You are provided with verified lecture materials as context below. "
+                "Answer the student's question by integrating this context. Explain the concepts clearly, "
+                "conceptually, and step-by-step as a helpful teaching assistant. Ground your answer in "
+                "the provided context, prioritizing the specific definitions, examples, and formulas covered in class.\n\n"
+                f"--- LECTURE CONTEXT ---\n{context_text}\n\n"
+                f"--- STUDENT QUESTION ---\n{question}"
             )
 
             # ── Step 5: Call llama3 ──────────────────────────────────────────
@@ -347,9 +349,15 @@ class ChatService:
         user_prompt = question
         if context_text:
             user_prompt = (
-                f"Use the following lecture context to answer the student's question. "
-                f"Maintain your teacher persona and explanation style as defined in your system prompt.\n\n"
-                f"--- CONTEXT ---\n{context_text}\n\n"
+                "You are provided with verified lecture transcripts and study materials as context below. "
+                "Your goal is to answer the student's question by integrating this lecture context "
+                "with your deep pedagogical knowledge, while fully maintaining your teacher persona and explanation style.\n\n"
+                "INSTRUCTIONS FOR YOUR EXPLANATION:\n"
+                "1. Ground your answer in the provided LECTURE CONTEXT, prioritizing the specific definitions, examples, and formulas covered in class.\n"
+                "2. Do not just copy-paste the text. Synthesize it into a clear, step-by-step explanation that is easy to follow.\n"
+                "3. Use your teacher clone's unique style (e.g. starting with intuition, building patterns, or practical build-first explanations).\n"
+                "4. Structure your response logically: start with a simple high-level summary, break down the core details, and end with a quick takeaway or a short check-for-understanding question.\n\n"
+                f"--- LECTURE CONTEXT ---\n{context_text}\n\n"
                 f"--- STUDENT QUESTION ---\n{question}"
             )
 
